@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/theodo/hydra/issues"
   },
-  "homepage": "https://github.com/theodo/hydra#readme"
+  "homepage": "https://github.com/theodo/hydra#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
