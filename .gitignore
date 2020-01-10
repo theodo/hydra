@@ -1,3 +1,4 @@
 topology.json
 .env
+.npmrc
 node_modules/

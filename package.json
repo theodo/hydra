@@ -1,5 +1,5 @@
 {
-  "name": "y",
+  "name": "@clementhannicq/hydra",
   "version": "0.0.1",
   "description": "Microservices Project Management",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "hydra": "./src/index.js"
+    "hydra": "src/index.js"
   },
   "author": "ClementH",
   "license": "MIT",
