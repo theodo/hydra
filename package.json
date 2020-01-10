@@ -1,6 +1,6 @@
 {
   "name": "@clementhannicq/hydra",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Microservices Project Management",
   "main": "index.js",
   "scripts": {
