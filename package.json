@@ -10,7 +10,7 @@
     "prepublish": "yarn build"
   },
   "bin": {
-    "hydra": "src/index.js"
+    "hydra": "dist/index.js"
   },
   "author": "ClementH",
   "license": "MIT",
