@@ -2,6 +2,12 @@
 
 Hydra manages your local microservices configuration, and handle configuring and running those you want.
 
+## Install
+
+```
+npm i @clementhannicq/hydra
+```
+
 ## Setup
 
 Hydra uses a file named `topology.json`, read from the current directory to know what services are available, what are the modes you can run them on, and how to configure and execute them.
