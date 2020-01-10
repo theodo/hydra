@@ -81,7 +81,9 @@ export default class ProcessManager {
           ? this.evaluateDependencies(serviceMode.dependencies.env)
           : {})
       },
-      shell: "/bin/sh",
+      shell: serviceMode.run.shell
+        ? this.evaluateValue(serviceMode.run.shell)
+        : "/bin/sh",
       cwd: this.evaluateValue(serviceMode.run.location)
     });
 

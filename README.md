@@ -78,6 +78,7 @@ Main use of those environment variables should be to handle computer-dependent d
 The following `topology.json` fields do interpret env variable placeholders:
 
 - `[*].modes[*].run.command`
+- `[*].modes[*].run.shell`
 - `[*].modes[*].run.location`
 - `[*].modes[*].config.*`
 
