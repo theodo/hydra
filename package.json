@@ -4,9 +4,9 @@
   "description": "Microservices Project Management",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
     "start": "yarn build && ./dist/index.js",
-    "build": "babel src --out-dir dist",
+    "test": "jest",
+    "build": "rm -rf ./dist && babel src --ignore \"src/**/*.spec.js\" --out-dir dist",
     "prepublish": "yarn build"
   },
   "bin": {
@@ -22,7 +22,9 @@
   "devDependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7"
+    "@babel/preset-env": "^7.7.7",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
   },
   "repository": {
     "type": "git",

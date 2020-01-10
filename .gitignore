@@ -1,4 +1,6 @@
 topology.json
 .env
 .npmrc
+yarn-error.log
+dist
 node_modules/
