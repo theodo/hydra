@@ -61,8 +61,8 @@ export default class Interface {
 
     this.configurator.on("submit", () => processManager.startAll());
 
-    this.screen.key(["escape", "q", "C-c"], () => {
-      processManager.stopAll();
+    this.screen.key(["escape", "q", "C-c"], async () => {
+      await processManager.stopAll();
       process.exit(0);
     });
 
@@ -92,6 +92,19 @@ export default class Interface {
     });
     output.key(["left"], () => this.offsetTermOutput(-1));
     output.key(["right"], () => this.offsetTermOutput(1));
+    output.key(["?"], async () => {
+      try {
+        const processes = await this.processManager.getChildProcesses(
+          serviceName
+        );
+        processes.forEach(({ pid, cmd }) => {
+          output.add(`## Hydra ##: ${pid} ${cmd}`);
+        });
+      } catch (e) {
+        output.add(e.toString());
+      }
+      output.screen.render();
+    });
 
     this.outputs[serviceName] = output;
 

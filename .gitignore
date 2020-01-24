@@ -3,4 +3,5 @@ topology.json
 .npmrc
 yarn-error.log
 dist
+coverage
 node_modules/
