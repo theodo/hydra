@@ -24,15 +24,7 @@ function runCommand(command, args) {
 }
 
 async function getProcesses(...args) {
-  return (
-    await runCommand("ps", [
-      "--no-headers",
-      "-ww",
-      "-o",
-      "pid,ppid,cmd",
-      ...args
-    ])
-  )
+  return (await runCommand("ps", ["-ww", "-o", "pid,ppid,command", ...args]))
     .map(line => line.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/))
     .map(([line, pid, ppid, cmd]) => ({ pid, ppid, cmd }));
 }
