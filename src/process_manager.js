@@ -25,8 +25,9 @@ function runCommand(command, args) {
 
 async function getProcesses(...args) {
   return (await runCommand("ps", ["-ww", "-o", "pid,ppid,command", ...args]))
+    .filter((_, index) => index !== 0)
     .map(line => line.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/))
-    .map(([line, pid, ppid, cmd]) => ({ pid, ppid, cmd }));
+    .map(([_, pid, ppid, cmd]) => ({ pid, ppid, cmd }));
 }
 
 function getChildren(processByPPID, processes) {
