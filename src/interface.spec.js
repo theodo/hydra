@@ -29,7 +29,8 @@ jest.mock("neo-blessed", () => {
     hide: jest.fn(),
     focus: jest.fn(),
     render: jest.fn(),
-    setContent: jest.fn()
+    setContent: jest.fn(),
+    screen: { render: jest.fn() }
   });
   return {
     box: jest.fn(blessedMock),
