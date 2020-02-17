@@ -4,4 +4,5 @@ topology.json
 yarn-error.log
 dist
 coverage
+config
 node_modules/
