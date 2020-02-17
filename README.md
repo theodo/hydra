@@ -110,3 +110,4 @@ It starts on `mode configuration`, the user is expected to choose a mode for eac
 - up, down: Scroll the current log output (can also be scrolled with the mousewheel)
 - left, right: Switch to the log output of a different service. The current service being logged is displayed on top of the logs.
 - C-l: Clear the log ouput for the currently selected service.
+- ?: Log the running processes and their PID
