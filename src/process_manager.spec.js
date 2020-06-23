@@ -1,8 +1,14 @@
 import ProcessManager from "./process_manager";
 import { spawn } from "child_process";
+import { writeFileSync } from "fs";
+import { join } from "path";
 
 jest.mock("child_process", () => ({
   spawn: jest.fn(),
+}));
+
+jest.mock("fs", () => ({
+  writeFileSync: jest.fn(),
 }));
 
 const spawnMock = (data) => ({
@@ -70,6 +76,11 @@ describe("Process Manager", () => {
                 dependencies: { env: {} },
                 run: { command: "c", location: "l" },
               },
+              {
+                name: "dotenv",
+                dependencies: { dotenv: {} },
+                run: { command: "c", location: "l" },
+              },
             ],
           },
         ],
@@ -105,6 +116,19 @@ describe("Process Manager", () => {
       await processManager.start("service");
 
       expect(spawn.mock.calls[0][1].env).toHaveProperty("key", "value");
+    });
+
+    it("creates the required dotenv file", async () => {
+      const env = { key: "value", otherkey: "value2" };
+      processManager.configuration.getServiceConfig.mockReturnValue("dotenv");
+      processManager.evaluateDependencies.mockReturnValue(env);
+
+      await processManager.start("service");
+
+      expect(writeFileSync).toHaveBeenCalledWith(
+        join("l", ".env"),
+        "key=value\notherkey=value2"
+      );
     });
 
     it("uses /bin/sh as a default shell", async () => {

@@ -2,6 +2,8 @@ import { spawn } from "child_process";
 import mapValues from "lodash/mapValues.js";
 import groupBy from "lodash/groupBy.js";
 import flatten from "lodash/flatten.js";
+import { writeFileSync } from "fs";
+import { join } from "path";
 
 import os from "os";
 
@@ -128,6 +130,18 @@ export default class ProcessManager {
 
     if (!serviceMode.run) {
       return;
+    }
+
+    if (serviceMode.dependencies.dotenv) {
+      const dependencies = this.evaluateDependencies(
+        serviceMode.dependencies.dotenv
+      );
+      writeFileSync(
+        join(serviceMode.run.location, ".env"),
+        Object.keys(dependencies)
+          .map((key) => `${key}=${dependencies[key]}`)
+          .join("\n")
+      );
     }
 
     const serviceProcess = spawn(this.evaluateValue(serviceMode.run.command), {
