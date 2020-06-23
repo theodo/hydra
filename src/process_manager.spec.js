@@ -61,6 +61,7 @@ describe("Process Manager", () => {
       processManager.logHandler = jest.fn();
       processManager.stop = jest.fn();
       processManager.evaluateDependencies = jest.fn();
+      processManager.evaluateValue = jest.fn((v) => v);
       spawn.mockReturnValue({
         stdout: { on: jest.fn },
         stderr: { on: jest.fn },
@@ -127,6 +128,20 @@ describe("Process Manager", () => {
 
       expect(writeFileSync).toHaveBeenCalledWith(
         join("l", ".env"),
+        "key=value\notherkey=value2"
+      );
+    });
+
+    it("evaluates env vars to detrmine the path and values of the .env file", async () => {
+      const env = { key: "value", otherkey: "value2" };
+      processManager.configuration.getServiceConfig.mockReturnValue("dotenv");
+      processManager.evaluateDependencies.mockReturnValue(env);
+      processManager.evaluateValue.mockImplementation((v) => `eval(${v})`);
+
+      await processManager.start("service");
+
+      expect(writeFileSync).toHaveBeenCalledWith(
+        join("eval(l)", ".env"),
         "key=value\notherkey=value2"
       );
     });

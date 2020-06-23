@@ -137,7 +137,7 @@ export default class ProcessManager {
         serviceMode.dependencies.dotenv
       );
       writeFileSync(
-        join(serviceMode.run.location, ".env"),
+        join(this.evaluateValue(serviceMode.run.location), ".env"),
         Object.keys(dependencies)
           .map((key) => `${key}=${dependencies[key]}`)
           .join("\n")
