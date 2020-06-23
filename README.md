@@ -51,6 +51,9 @@ The topology.json file would look like this:
         "dependencies": {
           "env": {
             "API_URL": "backend.url"
+          },
+          "dotenv": {
+            "BACKEND_URL": "backend.url"
           }
         }
       }
@@ -59,9 +62,9 @@ The topology.json file would look like this:
 ]
 ```
 
-If you choose to run the backend on dev and the frontend on local, hydra will run `yarn start` on the en variable `LOCAL_FRONTEND_REPO` folder with `API_URL` set to `https://backend.dev.mycompany` in its env.
+If you choose to run the backend on dev and the frontend on local, hydra will run `yarn start` on the en variable `LOCAL_FRONTEND_REPO` folder with `API_URL` set to `https://backend.dev.mycompany` in its env and create a `.env` file at `LOCAL_FRONTEND_REPO` containing `BACKEND_URL=backend.url`.
 
-If you instead chose to run both of them locally, hydra will start both and set the `API_URL` env variable to `http://localhost:8080` in the frontend process environment.
+If you instead chose to run both of them locally, hydra will start both and set the `API_URL` env variable to `http://localhost:8080` in the frontend process environment. Same for the `.env` file in the `LOCAL_FRONTEND_REPO` folder.
 
 ### Hydra environment variables
 
