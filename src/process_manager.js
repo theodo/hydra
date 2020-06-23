@@ -11,13 +11,8 @@ function runCommand(command, args) {
   return new Promise((resolve, reject) => {
     let output = [];
     const process = spawn(command, args, {});
-    process.stdout.on("data", data => {
-      output = output.concat(
-        data
-          .toString()
-          .trimEnd()
-          .split("\n")
-      );
+    process.stdout.on("data", (data) => {
+      output = output.concat(data.toString().trimEnd().split("\n"));
     });
     process.stdout.on("end", () => resolve(output));
   });
@@ -26,17 +21,17 @@ function runCommand(command, args) {
 async function getProcesses(...args) {
   return (await runCommand("ps", ["-ww", "-o", "pid,ppid,command", ...args]))
     .filter((_, index) => index !== 0)
-    .map(line => line.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/))
+    .map((line) => line.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/))
     .map(([_, pid, ppid, cmd]) => ({ pid, ppid, cmd }));
 }
 
 function getChildren(processByPPID, processes) {
   return flatten(
-    processes.map(process => {
+    processes.map((process) => {
       if (processByPPID[process.pid]) {
         return [
           process,
-          ...getChildren(processByPPID, processByPPID[process.pid])
+          ...getChildren(processByPPID, processByPPID[process.pid]),
         ];
       }
       return [process];
@@ -79,7 +74,7 @@ export default class ProcessManager {
     await Promise.all(
       this.configuration.topology
         .map(({ name }) => name)
-        .map(serviceName => this.stop(serviceName))
+        .map((serviceName) => this.stop(serviceName))
     );
   }
 
@@ -87,7 +82,7 @@ export default class ProcessManager {
     await Promise.all(
       this.configuration.topology
         .map(({ name }) => name)
-        .map(serviceName => this.start(serviceName))
+        .map((serviceName) => this.start(serviceName))
     );
   }
 
@@ -96,7 +91,7 @@ export default class ProcessManager {
       return {};
     }
 
-    return mapValues(dependencies, value => {
+    return mapValues(dependencies, (value) => {
       const [serviceName, setting] = value.split(".");
       const serviceMode = this.getSelectedMode(serviceName);
 
@@ -140,19 +135,19 @@ export default class ProcessManager {
         ...process.env,
         ...(serviceMode.dependencies
           ? this.evaluateDependencies(serviceMode.dependencies.env)
-          : {})
+          : {}),
       },
       shell: serviceMode.run.shell
         ? this.evaluateValue(serviceMode.run.shell)
         : "/bin/sh",
       cwd: this.evaluateValue(serviceMode.run.location),
-      detached: false
+      detached: false,
     });
 
-    serviceProcess.stdout.on("data", data =>
+    serviceProcess.stdout.on("data", (data) =>
       this.logHandler(serviceName, data.toString().trimEnd())
     );
-    serviceProcess.stderr.on("data", data =>
+    serviceProcess.stderr.on("data", (data) =>
       this.logHandler(serviceName, data.toString().trimEnd())
     );
 
@@ -186,15 +181,15 @@ export default class ProcessManager {
 
     const children = await this.getChildProcesses(serviceName);
 
-    await new Promise(resolve => {
+    await new Promise((resolve) => {
       this.processes[serviceName].on("end", resolve());
       this.processes[serviceName].kill(os.constants.signals.SIGINT);
     });
 
     await Promise.all(
-      children.map(async child => {
+      children.map(async (child) => {
         await this.terminateSubProcess(serviceName, child);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         await this.terminateSubProcess(serviceName, child, true);
       })
     );
